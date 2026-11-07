@@ -1140,30 +1140,17 @@
 
         // Global Action Listeners
         
-window.setDeviceMode = function(id, mode) {
-    const device = equipmentData.find(d => d.id === id);
-    if (device) {
-        device.mode = mode;
-        updateDashboard();
-        showToast(`Updated ${device.name} protocol state.`);
-    }
-};
+        document.getElementById('apply-all-deepsleep').addEventListener('click', () => {
+            equipmentData.forEach(d => d.mode = 'deepsleep');
+            updateDashboard();
+            showToast('All imaging suites set to  Deep Sleep.');
+        });
 
-window.applyAllDeepSleep = function() {
-    equipmentData.forEach(d => {
-        d.mode = 'deepsleep';
-    });
-    updateDashboard();
-    showToast('All imaging suites set to Deep Sleep.');
-};
-
-window.resetAllNormal = function() {
-    equipmentData.forEach(d => {
-        d.mode = 'normal';
-    });
-    updateDashboard();
-    showToast('Reset all equipment to normal active baseline.');
-};
+        document.getElementById('reset-all').addEventListener('click', () => {
+            equipmentData.forEach(d => d.mode = 'normal');
+            updateDashboard();
+            showToast('Reset all equipment to normal active baseline.');
+        });
 
         document.getElementById('currency-select').addEventListener('change', (e) => {
             selectedCurrency = e.target.value;
