@@ -980,33 +980,25 @@
         // Close Modal Controls
         document.getElementById('close-modal-edit').onclick = () => document.getElementById('modal-edit').classList.add('hidden');
         document.getElementById('cancel-modal-edit').onclick = () => document.getElementById('modal-edit').classList.add('hidden');
-        document.getElementById('close-modal-code').onclick = () => document.getElementById('modal-code').classList.add('hidden');
-        document.getElementById('done-modal-code').onclick = () => document.getElementById('modal-code').classList.add('hidden');
+        
 
      
        
 
         // Main Metric Calculation & Update Loop
-        function updateDashboard() {
-            const currencySelect = document.getElementById('currency-select');
-    if (currencySelect) {
-       currencySelect.addEventListener('change', (e) => {
-        selectedCurrency = e.target.value;
-        updateDashboard();
-        showToast(`Currency updated to ${selectedCurrency}`);
-    });
-    }
+      
             let totalPower = 0;
             let totalBasePower = 0;
             const devicePowers = {};
-
+       function renderEquipmentCards(devicePowers) {
+           
             equipmentData.forEach(device => {
                 const p = calculateDevicePower(device);
                 devicePowers[device.id] = p;
                 totalPower += p;
                 totalBasePower += device.basePower;
             });
-
+       }
             totalPower = parseFloat(totalPower.toFixed(1));
             totalBasePower = parseFloat(totalBasePower.toFixed(1));
 
@@ -1014,12 +1006,13 @@
             const dailyKwhSaved = parseFloat((savedPowerKw * 24).toFixed(1));
             
             let rate = KWH_COST_EGP;
+            
     if (selectedCurrency === 'USD') {
         rate = KWH_COST_USD;
     } else if (selectedCurrency === 'EUR') {
         rate = KWH_COST_EUR;
     }
-            const rate = selectedCurrency === 'EGP' ? KWH_COST_EGP : (selectedCurrency === 'USD' ? KWH_COST_USD : KWH_COST_EUR);
+          
             const dailyCostSaved = Math.round(dailyKwhSaved * rate);
             const annualCostSaved = Math.round(dailyCostSaved * 365);
 
@@ -1054,7 +1047,7 @@
             pushPowerToHistory(totalPower, totalBasePower);
 
             // Re-render Equipment Grid
-            renderEquipmentCards();
+            renderEquipmentCards(devicePowers);
         }
 
         // Render Dynamic SVG Donut Chart and Legend
