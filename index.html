@@ -747,10 +747,10 @@
                 icon: 'fa-magnet',
                 color: '#06B6D4', // Cyan
                 basePower: 110.0, // kW
-                mode: 'normal', // 'normal', 'tier1', 'tier2'
+                mode: 'normal', // 'normal', 'lowpower', 'deepsleep'
                 temp: '4.2 K (Cryo)',
-                tier1Reduction: 30, // %
-                tier2Reduction: 60  // %
+                lowpowerReduction: 30, // %
+                deepsleepReduction: 60  // %
             },
             {
                 id: 'ct-128',
@@ -761,8 +761,8 @@
                 basePower: 65.0, // kW
                 mode: 'normal',
                 temp: '34.5 °C (Anode)',
-                tier1Reduction: 35,
-                tier2Reduction: 65
+                lowpowerReduction: 35,
+                deepsleepReduction: 65
             },
             {
                 id: 'pet-ct',
@@ -773,8 +773,8 @@
                 basePower: 35.0, // kW
                 mode: 'normal',
                 temp: '21.0 °C (Det)',
-                tier1Reduction: 25,
-                tier2Reduction: 55
+                lowpowerReduction: 25,
+                deepsleepReduction: 55
             },
             {
                 id: 'xray-dig',
@@ -785,8 +785,8 @@
                 basePower: 10.0, // kW
                 mode: 'normal',
                 temp: '24.2 °C (Gen)',
-                tier1Reduction: 40,
-                tier2Reduction: 75
+                lowpowerReduction: 40,
+                deepsleepReduction: 75
             }
         ];
 
@@ -816,9 +816,9 @@
         function calculateDevicePower(device) {
             let power = device.basePower;
             if (device.mode === 'lowpower') {
-                power = device.basePower * (1 - (device.tier1Reduction / 100));
+                power = device.basePower * (1 - (device.lowpowerReduction / 100));
             } else if (device.mode === 'deepsleep') {
-                power = device.basePower * (1 - (device.tier2Reduction / 100));
+                power = device.basePower * (1 - (device.deepsleepReduction / 100));
             }
             // Add subtle random float noise for live simulation feedback
             const noise = (Math.random() - 0.5) * (device.basePower * 0.02);
@@ -913,7 +913,7 @@
                                         ? 'bg-teal-500/20 border-teal-500 text-teal-300 font-bold shadow-sm' 
                                         : 'bg-slate-800/70 border-slate-700/80 text-slate-400 hover:bg-slate-800 hover:text-slate-200'}">
                                     <i class="fa-solid fa-leaf text-[10px]"></i>
-                                    <span>Tier 1 (-${device.tier1Reduction}%)</span>
+                                    <span>Tier 1 (-${device.lowpowerReduction}%)</span>
                                 </button>
                                 
                                 <button onclick="setDeviceMode('${device.id}', 'deepsleep')" 
@@ -922,7 +922,7 @@
                                         ? 'bg-indigo-500/20 border-indigo-500 text-indigo-300 font-bold shadow-sm' 
                                         : 'bg-slate-800/70 border-slate-700/80 text-slate-400 hover:bg-slate-800 hover:text-slate-200'}">
                                     <i class="fa-solid fa-moon text-[10px]"></i>
-                                    <span>Tier 2 (-${device.tier2Reduction}%)</span>
+                                    <span>Tier 2 (-${device.deepsleepReduction}%)</span>
                                 </button>
                             </div>
                         </div>
@@ -983,13 +983,7 @@
         document.getElementById('close-modal-code').onclick = () => document.getElementById('modal-code').classList.add('hidden');
         document.getElementById('done-modal-code').onclick = () => document.getElementById('modal-code').classList.add('hidden');
 
-        // Export Code Trigger
-        document.getElementById('btn-export-code').onclick = () => {
-            const fullHtml = document.documentElement.outerHTML;
-            document.getElementById('code-textarea').value = fullHtml;
-            document.getElementById('modal-code').classList.remove('hidden');
-        };
-
+     
        
 
         // Main Metric Calculation & Update Loop
@@ -1011,7 +1005,7 @@
             const savedPowerKw = Math.max(0, parseFloat((totalBasePower - totalPower).toFixed(1)));
             const dailyKwhSaved = parseFloat((savedPowerKw * 24).toFixed(1));
             
-            const rate = selectedCurrency === 'EGP' ? KWH_COST_EGP : KWH_COST_USD; KWH_COST_EUR;
+            const rate = selectedCurrency === 'EGP' ? KWH_COST_EGP : (selectedCurrency === 'USD' ? KWH_COST_USD : KWH_COST_EUR);
             const dailyCostSaved = Math.round(dailyKwhSaved * rate);
             const annualCostSaved = Math.round(dailyCostSaved * 365);
 
