@@ -87,15 +87,14 @@
             <!-- Quick actions and status -->
             <div class="flex items-center space-x-2 sm:space-x-3">
                 
-               <button onclick="applyAllDeepSleep()" id="deepsleep" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 border border-teal-500/30 transition-all flex items-center gap-1.5">
-    <i class="fa-solid fa-moon"></i>
-    <span class="hidden sm:inline">Deep Sleep</span>
-</button>
-
-<button onclick="resetAllNormal()" id="reset-all" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5">
-    <i class="fa-solid fa-rotate-left"></i>
-    <span class="hidden sm:inline">Reset To Normal </span>
-</button>
+                <button id="apply-all-deepsleep" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-teal-500/15 hover:bg-teal-500/25 text-teal-300 border border-teal-500/30 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-moon"></i>
+                    <span class="hidden sm:inline">Night Sleep Mode</span>
+                </button>
+                <button id="reset-all" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span class="hidden sm:inline">Reset Baseline</span>
+                </button>
                 <div class="h-6 w-px bg-slate-800 hidden sm:block"></div>
                 <div class="flex items-center gap-2 text-xs text-slate-400 font-mono">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
